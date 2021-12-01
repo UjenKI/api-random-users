@@ -12,29 +12,6 @@ export default class UserList extends Component{
         userList: []
     }
 
-    randomUsers(array){
-        let i = array.length - 1;
-        for (; i > 0; i--) {
-            if(array.length === 15){
-                return
-            }
-          const j = Math.floor(Math.random() * (i + 1));
-          const temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
-        }
-        console.log(array);
-        return array;
-    }
-
-    componentDidMount(){
-        this.getData.getRandomUsers()
-            .then((userList) => {
-                userList = this.randomUsers(userList)
-                this.setState({userList})
-            })
-    }
-
     renderItems(users){
         return users.map((user, i) => {
             return (
@@ -67,10 +44,9 @@ export default class UserList extends Component{
     }
 
     render(){
-        const {userList} = this.state;
-        let limit = userList.slice(0, 15);
+        const { userList } = this.props;
+        const limit = userList.slice(0, 15);
         const item = this.renderItems(limit);
-        // console.log(userList);
         return(
             <div>
                 <h1>userList</h1>

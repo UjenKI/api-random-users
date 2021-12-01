@@ -20,7 +20,7 @@ export default class  getData {
 
     _transformUsers(user){
         return {
-            gernder: user.gender,
+            gender: user.gender,
             name: user.name,
             email: user.email,
             date: user.dob,
