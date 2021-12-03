@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-
-// import UserListItem from './userListItem';
-// import getData from '../service/getData';
-
 import './userList.css';
 
 export default class UserList extends Component{
-    // getData = new getData();
-
-    // state = {
-    //     userList: []
-    // }
-
     renderItems(users){
         return users.map((user, i) => {
             return (
@@ -43,14 +33,6 @@ export default class UserList extends Component{
         })
     }
 
-    // filteredGender = (userList, gender) => {
-    //     if(gender == 'all') return userList;
-    //     console.log(userList);
-    //     let filteredGender = userList.filter((item) => item.gender == gender);
-    //     console.log(filteredGender);
-    //     return filteredGender;
-    // }
-
     render(){
         const { userList } = this.props;
         const limit = userList.slice(0, 15);
@@ -60,7 +42,6 @@ export default class UserList extends Component{
                 <h1>userList</h1>
                 <ul className="userList">
                     {item}
-                     {/* <UserListItem userList={userList}/> */}
                 </ul>
             </div>
         )

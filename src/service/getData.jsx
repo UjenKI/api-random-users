@@ -14,7 +14,6 @@ export default class  getData {
 
     async getRandomUsers(){
         const users = await this.getResource();
-        // console.log(users.results.map(this._transformUsers));
         return users.results.map(this._transformUsers);
     }
 

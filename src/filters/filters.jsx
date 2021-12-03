@@ -13,19 +13,8 @@ export default class Filters extends Component{
         filters: {
             gender: '',
             nat: '',
-            allNat: ''
         }
     }
-    // userList = this.props.userList;
-
-    // genderFilter = (e) => {
-    //     const ganderFilters = e.target.value;
-    //     this.setState({
-    //         filters: {
-    //             gender: ganderFilters
-    //         }
-    //     });
-    // }
 
     componentDidMount(){
         this.getData.getRandomUsers()
@@ -33,6 +22,14 @@ export default class Filters extends Component{
             this.setState({
                 userList:userList
             })
+        })
+    }
+
+    resetNat = () => {
+        this.setState({
+            filters: {
+                nat: ''
+            }
         })
     }
 
@@ -53,16 +50,13 @@ export default class Filters extends Component{
                 nat: updateNat
             }
         })
-        // const { filters } = this.state;
         this.props.updateFilter(gen, updateNat);
     }
 
     natFilter = (userList) => {
-        // const arrNat = [];
         const nat = userList.map(item =>  item.nat).filter((val, id, array) => {
             return array.indexOf(val) == id;
         })
-        // nat.forEach(item => arrNat.push(item))
         return nat;
     }
 
@@ -75,14 +69,9 @@ export default class Filters extends Component{
     }
 
     render(){
-        // const { filters } = this.state;
-        // console.log(filters);
         const { userList } = this.state;
-        // console.log(userList);
         const natValue = this.natFilter(userList);
-        // console.log(natValue);
         const optionNat = this.optionBuilder(natValue);
-        // console.log(optionNat);
         return(
             <div className="filter__wrapper">
                 <form action="">
@@ -95,11 +84,10 @@ export default class Filters extends Component{
                     </div>
                     <div className="nationality__filter">
                         <select name="nat" id="nat__filter" multiple="multiple">
-                        <option value="all">All</option>
+                        <option value="all" onClick={this.resetNat}>All</option>
                          { optionNat }
                         </select>
                     </div>
-                    {/* <button onClick={(e) => this.props.updateFilter(filters, e)}>Apply filters</button> */}
                     <button onClick={this.selectFilters}>Apply filters</button>
                 </form>
             </div>
