@@ -11,62 +11,60 @@ export default class App extends Component{
 
     state = {
         userList: [],
-        filter: 'male'
+        filters: {
+          gender: 'all',
+          nat: 'all'
+      }
     }
 
-    // randomUsers(array){
-    //   let i = array.length - 1;
-    //   for (; i > 0; i--) {
-    //       if(array.length === 15){
-    //           return
-    //       }
-    //     const j = Math.floor(Math.random() * (i + 1));
-    //     const temp = array[i];
-    //     array[i] = array[j];
-    //     array[j] = temp;
-    //   }
-    //   return array;
+    updateUserList = () => {
+        this.getData.getRandomUsers()
+        .then((userList) => {
+          this.setState({
+            userList: userList
+          })
+        })
+    }
+
+    updateFilter = (gen, nat) => {
+      console.log(gen, nat)
+      this.setState({
+        userList:[],
+        filters: {
+          gender: gen,
+          nat: nat
+        }
+      }, () => console.log(this.state.filters))
+      this.updateUserList();
+    }
+    
+
+    // applyFilters = (filter) => {
+    //   this.updateFilter(filter);
     // }
 
-    updateUserList = (userList) => {
-      this.setState({
-        userList: userList
-      })
-    }
-
-    updateFilter = (filter) => {
-      this.setState({
-        filter: filter
-      })
-      console.log(this.state);
-    }
-
     componentDidMount(){
-      this.getData.getRandomUsers()
-          .then((userList) => {
-              // userList = this.randomUsers(userList);
-              // this.filteredGender(userList);
-              this.setState({
-                userList:userList
-              })
-          })
+      this.updateUserList()
     }
 
-    filteredGender = (userList) => {
-      const lowerCaseGender = userList.map(item => item.gender.toLowerCase());
-      let filteredGender = this.state.userList.filter(user => 
-        user.gender.toLowerCase().indexOf(lowerCaseGender) !== -1
-      );
-        this.updateUserList(filteredGender);
+    filteredGender = (userList, filter) => {
+      // console.log(this.state.filters)
+      if(filter.gender == 'all') return userList;
+      let filteredGender = userList.filter((item) => item.gender == filter.gender ).filter((item) => item.nat == filter.nat);
+      // console.log(filteredGender, filter, this.state.filters);
+      
+      return filteredGender;
     }
 
     render(){
-      const { userList } = this.state;
+      const { userList, filters} = this.state;
+      // console.log(userList);
+      const filteredUsers = this.filteredGender(userList, filters);
       return(
         <div>
           <h1>App</h1>
-          <Filters updateFilter={this.updateFilter} filteredGender={this.filteredGender} state={this.state.userList}/>
-          <UserList userList={ userList }/>
+          <Filters updateFilter={this.updateFilter} state={this.state}/>
+          <UserList userList={ filteredUsers } />
         </div>
       )
     }
