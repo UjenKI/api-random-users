@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
 
+import getData from '../service/getData';
+
 import './filters.css';
 
 export default class Filters extends Component{
 
+    getData = new getData();
+
     state = {
+        userList:[],
         filters: {
             gender: '',
-            nat: ''
+            nat: '',
+            allNat: ''
         }
     }
     // userList = this.props.userList;
@@ -21,35 +27,42 @@ export default class Filters extends Component{
     //     });
     // }
 
+    componentDidMount(){
+        this.getData.getRandomUsers()
+        .then((userList) => {
+            this.setState({
+                userList:userList
+            })
+        })
+    }
+
     selectFilters = (e) => {
         e.preventDefault();
         const gen = document.getElementById('gender__filter').value;
         const natt = document.getElementById('nat__filter');
         const selected = [...natt.options].filter(option => option.selected).map(option => option.value);
-        // this.setState({
-        //     filters: {
-        //         gender: gen,
-        //         nat: selected
-        //     }
-        // })
+        const lll = this.state.filters.nat
+
+
+        const updateNat = [...lll, ...selected]
+        console.log(updateNat);
+        
+        this.setState({
+            filters: {
+                gender: gen,
+                nat: updateNat
+            }
+        })
         // const { filters } = this.state;
-        this.props.updateFilter(gen, selected);
+        this.props.updateFilter(gen, updateNat);
     }
 
-    // nationalFilter = () => {
-    //     const natt = document.getElementById('nat__filter');
-    //     const selected = [...natt.options].filter(option => option.selected).map(option => option.value);
-    //     this.setState({
-    //         filters:{
-    //             nat:selected
-    //         }
-    //     })
-    // }
-
     natFilter = (userList) => {
+        // const arrNat = [];
         const nat = userList.map(item =>  item.nat).filter((val, id, array) => {
             return array.indexOf(val) == id;
         })
+        // nat.forEach(item => arrNat.push(item))
         return nat;
     }
 
@@ -64,7 +77,7 @@ export default class Filters extends Component{
     render(){
         // const { filters } = this.state;
         // console.log(filters);
-        const { userList } = this.props.state;
+        const { userList } = this.state;
         // console.log(userList);
         const natValue = this.natFilter(userList);
         // console.log(natValue);

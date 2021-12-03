@@ -27,12 +27,12 @@ export default class App extends Component{
     }
 
     updateFilter = (gen, nat) => {
-      console.log(gen, nat)
+      // console.log(gen, nat)
       this.setState({
         userList:[],
         filters: {
           gender: gen,
-          nat: nat
+          nat: nat 
         }
       }, () => console.log(this.state.filters))
       this.updateUserList();
@@ -49,6 +49,7 @@ export default class App extends Component{
 
     filteredGender = (userList, filter) => {
       // console.log(this.state.filters)
+      if(filter.nat === '') filter.nat = 'all';
       if(filter.gender == 'all') return userList;
       let filteredGender = userList.filter((item) => item.gender == filter.gender ).filter((item) => item.nat == filter.nat);
       // console.log(filteredGender, filter, this.state.filters);
