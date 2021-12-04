@@ -1,28 +1,28 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import getData from '../service/getData';
 
 import './filters.css';
 
-export default class Filters extends Component{
+export default class Filters extends Component {
 
     getData = new getData();
 
     state = {
-        userList:[],
+        userList: [],
         filters: {
             gender: '',
             nat: '',
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getData.getRandomUsers()
-        .then((userList) => {
-            this.setState({
-                userList:userList
+            .then((userList) => {
+                this.setState({
+                    userList: userList
+                })
             })
-        })
     }
 
     resetNat = () => {
@@ -43,7 +43,7 @@ export default class Filters extends Component{
 
         const updateNat = [...lll, ...selected]
         console.log(updateNat);
-        
+
         this.setState({
             filters: {
                 gender: gen,
@@ -54,7 +54,7 @@ export default class Filters extends Component{
     }
 
     natFilter = (userList) => {
-        const nat = userList.map(item =>  item.nat).filter((val, id, array) => {
+        const nat = userList.map(item => item.nat).filter((val, id, array) => {
             return array.indexOf(val) == id;
         })
         return nat;
@@ -62,17 +62,17 @@ export default class Filters extends Component{
 
     optionBuilder = (arrayFilter) => {
         return arrayFilter.map((item, i) => {
-            return(
+            return (
                 <option value={item} key={i}>{item}</option>
             )
         })
     }
 
-    render(){
+    render() {
         const { userList } = this.state;
         const natValue = this.natFilter(userList);
         const optionNat = this.optionBuilder(natValue);
-        return(
+        return (
             <div className="filter__wrapper">
                 <form action="">
                     <div className="gender__filter">
@@ -84,8 +84,8 @@ export default class Filters extends Component{
                     </div>
                     <div className="nationality__filter">
                         <select name="nat" id="nat__filter" multiple="multiple">
-                        <option value="all" onClick={this.resetNat}>All</option>
-                         { optionNat }
+                            <option value="all" onClick={this.resetNat}>All</option>
+                            {optionNat}
                         </select>
                     </div>
                     <button onClick={this.selectFilters}>Apply filters</button>
